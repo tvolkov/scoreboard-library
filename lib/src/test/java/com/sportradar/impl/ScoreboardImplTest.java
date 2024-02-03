@@ -15,6 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -75,7 +76,7 @@ class ScoreboardImplTest {
         // then
         assertThatThrownBy(() -> scorboard.finishMatch(match)).isInstanceOf(IllegalStateException.class);
         verify(scoreboardStorage, times(1)).has(match);
-        verify(scoreboardStorage, times(1)).remove(match);
+        verify(scoreboardStorage, never()).remove(match);
     }
 
     @Test
