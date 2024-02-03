@@ -1,4 +1,9 @@
 package com.sportradar.model;
 
-public class Team {
+import static java.util.Objects.requireNonNull;
+
+public record Team(TeamName teamName) {
+    public Team {
+        requireNonNull(teamName);
+    }
 }
