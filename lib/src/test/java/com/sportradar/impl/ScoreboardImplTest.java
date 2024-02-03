@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.sportradar.model.Score.zeroScore;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.only;
@@ -65,7 +66,16 @@ class ScoreboardImplTest {
 
     @Test
     void throws_exception_when_trying_to_finish_non_existing_match(){
+        // given
+        var homeTeam = new Team(new TeamName("team1"));
+        var awayTeam = new Team(new TeamName("team2"));
+        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
+        when(scoreboardStorage.has(match)).thenReturn(true);
 
+        // then
+        assertThatThrownBy(() -> scorboard.finishMatch(match)).isInstanceOf(IllegalStateException.class);
+        verify(scoreboardStorage, times(1)).has(match);
+        verify(scoreboardStorage, times(1)).remove(match);
     }
 
     @Test
