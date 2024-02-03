@@ -2,7 +2,8 @@ package com.sportradar.impl;
 
 import com.sportradar.Scoreboard;
 import com.sportradar.ScoreboardSummary;
-import com.sportradar.model.Score;
+import com.sportradar.impl.storage.ScoreboardStorage;
+import com.sportradar.model.Match;
 import com.sportradar.model.Team;
 
 import java.util.Objects;
@@ -16,17 +17,17 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     @Override
-    public void startNewMatch(Team homeTeam, Team awayTeam) {
+    public Match startNewMatch(Team homeTeam, Team awayTeam) {
+        return null;
+    }
+
+    @Override
+    public void updateScore(Match match) {
 
     }
 
     @Override
-    public void updateScore(Score homeTeamScore, Score awayTeamScore) {
-
-    }
-
-    @Override
-    public void finishMatch(Team homeTeam, Team awayTeam) {
+    public void finishMatch(Match match) {
 
     }
 
