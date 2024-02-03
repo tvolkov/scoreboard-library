@@ -38,6 +38,10 @@ public class ScoreboardImpl implements Scoreboard {
     public void finishMatch(Match match) {
         requireNonNull(match);
 
+        if (scoreboardStorage.has(match)) {
+            throw new IllegalStateException("Unable to finish match which is not currently in progress");
+        }
+
         scoreboardStorage.remove(match);
     }
 

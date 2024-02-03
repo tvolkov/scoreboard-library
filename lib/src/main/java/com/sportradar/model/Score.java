@@ -7,6 +7,10 @@ public record Score(int value) {
         }
     }
 
+    public static Score of(int value) {
+        return new Score(value);
+    }
+
     public static Score zeroScore() {
         return new Score(0);
     }

@@ -2,7 +2,6 @@ package com.sportradar.impl;
 
 import com.sportradar.Scoreboard;
 import com.sportradar.impl.storage.ScoreboardStorage;
-import com.sportradar.impl.storage.SimpleScoreboardStorage;
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
@@ -10,13 +9,11 @@ import com.sportradar.model.TeamName;
 import com.sportradar.model.TeamScore;
 import org.junit.jupiter.api.Test;
 
+import static com.sportradar.model.Score.of;
 import static com.sportradar.model.Score.zeroScore;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.matches;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,11 +39,36 @@ class ScoreboardImplTest {
 
     @Test
     void updates_score() {
+        // given
+        var homeTeam = new Team(new TeamName("team1"));
+        var awayTeam = new Team(new TeamName("team2"));
+        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
+        var updatedMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, Score.of(1)));
+        when(scoreboardStorage.has(match)).thenReturn(true);
+
+        // when
+        scorboard.updateScore(updatedMatch);
+
+        // then
+        verify(scoreboardStorage).update(updatedMatch);
     }
 
     @Test
     void throws_exception_if_updated_score_is_less_than_current(){
+        // given
+        var homeTeam = new Team(new TeamName("team1"));
+        var awayTeam = new Team(new TeamName("team2"));
+        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, of(2)));
+        var updatedMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, Score.of(1)));
+        when(scoreboardStorage.has(match)).thenReturn(true);
 
+        // when
+        scorboard.updateScore(updatedMatch);
+
+        // then
+        assertThatThrownBy(() -> scorboard.updateScore(updatedMatch)).isInstanceOf(IllegalStateException.class);
+        verify(scoreboardStorage, times(1)).has(updatedMatch);
+        verify(scoreboardStorage, never()).update(updatedMatch);
     }
 
     @Test

@@ -9,5 +9,6 @@ public interface ScoreboardStorage {
     void add(Match match);
     void remove(Match match);
     boolean has(Match match);
+    void update(Match match);
     Collection<Match> get();
 }
