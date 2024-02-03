@@ -6,7 +6,6 @@ import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
-import com.sportradar.model.TeamScore;
 import org.junit.jupiter.api.Test;
 
 import static com.sportradar.model.Score.of;
@@ -26,9 +25,9 @@ class ScoreboardImplTest {
     @Test
     void starts_new_match() {
         // given
-        var homeTeam = new Team(new TeamName("team1"));
-        var awayTeam = new Team(new TeamName("team2"));
-        var expectedMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
+        var homeTeam = new Team(new TeamName("team1"), zeroScore());
+        var awayTeam = new Team(new TeamName("team2"), zeroScore());
+        var expectedMatch = new Match(homeTeam, awayTeam);
 
         // when
         scorboard.startNewMatch(homeTeam, awayTeam);
@@ -40,11 +39,12 @@ class ScoreboardImplTest {
     @Test
     void updates_score() {
         // given
-        var homeTeam = new Team(new TeamName("team1"));
-        var awayTeam = new Team(new TeamName("team2"));
-        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
-        var updatedMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, Score.of(1)));
-        when(scoreboardStorage.has(match)).thenReturn(true);
+        var teamName1 = new TeamName("team1");
+        var teamName2 = new TeamName("team2");
+        var homeTeam = new Team(teamName1, zeroScore());
+        var awayTeam = new Team(teamName2, zeroScore());
+        var updatedMatch = new Match(new Team(teamName1, zeroScore()), new Team(teamName2, Score.of(1)));
+        when(scoreboardStorage.hasMatchOfTeams(teamName1, teamName2)).thenReturn(true);
 
         // when
         scorboard.updateScore(updatedMatch);

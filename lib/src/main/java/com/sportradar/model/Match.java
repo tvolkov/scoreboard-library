@@ -2,9 +2,9 @@ package com.sportradar.model;
 
 import static java.util.Objects.requireNonNull;
 
-public record Match(TeamScore homeTeamScore, TeamScore awayTeamScore) {
+public record Match(Team homeTeam, Team awayTeam) {
     public Match {
-        requireNonNull(homeTeamScore);
-        requireNonNull(awayTeamScore);
+        requireNonNull(homeTeam);
+        requireNonNull(awayTeam);
     }
 }

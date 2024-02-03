@@ -5,7 +5,6 @@ import com.sportradar.ScoreboardSummary;
 import com.sportradar.impl.storage.ScoreboardStorage;
 import com.sportradar.model.Match;
 import com.sportradar.model.Team;
-import com.sportradar.model.TeamScore;
 
 import static com.sportradar.model.Score.zeroScore;
 import static java.util.Objects.requireNonNull;
@@ -31,7 +30,11 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public void updateScore(Match match) {
+        requireNonNull(match);
 
+        if (!scoreboardStorage.hasMatchOfTeams(match.homeTeamScore().team(), match.awayTeamScore().team())) {
+
+        }
     }
 
     @Override
