@@ -16,6 +16,11 @@ public class SimpleScoreboardStorage implements ScoreboardStorage {
     }
 
     @Override
+    public boolean has(Match match) {
+        return false;
+    }
+
+    @Override
     public Collection<Match> get() {
         return null;
     }

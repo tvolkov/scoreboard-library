@@ -18,6 +18,8 @@ repositories {
 dependencies {
     // Use JUnit Jupiter for testing.
     testImplementation(libs.junit.jupiter)
+    testImplementation("org.assertj:assertj-core:3.25.2")
+    testImplementation("org.mockito:mockito-core:5.10.0")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 

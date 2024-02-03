@@ -5,20 +5,28 @@ import com.sportradar.ScoreboardSummary;
 import com.sportradar.impl.storage.ScoreboardStorage;
 import com.sportradar.model.Match;
 import com.sportradar.model.Team;
+import com.sportradar.model.TeamScore;
 
-import java.util.Objects;
+import static com.sportradar.model.Score.zeroScore;
+import static java.util.Objects.requireNonNull;
 
 public class ScoreboardImpl implements Scoreboard {
 
     private final ScoreboardStorage scoreboardStorage;
 
     public ScoreboardImpl(ScoreboardStorage scoreboardStorage) {
-        this.scoreboardStorage = Objects.requireNonNull(scoreboardStorage);
+        this.scoreboardStorage = requireNonNull(scoreboardStorage);
     }
 
     @Override
     public Match startNewMatch(Team homeTeam, Team awayTeam) {
-        return null;
+        requireNonNull(homeTeam);
+        requireNonNull(awayTeam);
+
+        final var newMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
+        scoreboardStorage.add(newMatch);
+
+        return newMatch;
     }
 
     @Override
@@ -28,7 +36,9 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public void finishMatch(Match match) {
+        requireNonNull(match);
 
+        scoreboardStorage.remove(match);
     }
 
     @Override

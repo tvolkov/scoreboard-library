@@ -6,4 +6,8 @@ public record Score(int value) {
             throw new IllegalArgumentException("Score can't be negative");
         }
     }
+
+    public static Score zeroScore() {
+        return new Score(0);
+    }
 }
