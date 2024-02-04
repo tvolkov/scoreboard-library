@@ -64,7 +64,7 @@ public class ScoreboardImpl implements Scoreboard {
 
     @Override
     public ScoreboardSummary getSummary() {
-        final var summaryListView = new ArrayList<>(scoreboardStorage.getAll().entrySet());
+        final var summaryListView = scoreboardStorage.getAll();
         final var sortedMatches = summaryListView
                 .stream()
                 .sorted(Comparator.<Map.Entry<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()

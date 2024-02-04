@@ -2,8 +2,10 @@ package com.sportradar.impl.storage;
 
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Map;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface ScoreboardStorage {
@@ -12,5 +14,5 @@ public interface ScoreboardStorage {
     void remove(Match match);
     Optional<Score> get(Match match);
     void update(Match match, Score score);
-    Map<Match, Score> getAll();
+    List<Pair<Match, Score>> getAll();
 }

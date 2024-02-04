@@ -2,9 +2,9 @@ package com.sportradar;
 
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.System.lineSeparator;
@@ -12,9 +12,9 @@ import static java.util.Objects.requireNonNull;
 
 public class ScoreboardSummary {
 
-    private final List<Map.Entry<Match, Score>> scoreboardView;
+    private final List<Pair<Match, Score>> scoreboardView;
 
-    public ScoreboardSummary(List<Map.Entry<Match, Score>> scoreboardView) {
+    public ScoreboardSummary(List<Pair<Match, Score>> scoreboardView) {
         requireNonNull(scoreboardView);
         this.scoreboardView = scoreboardView;
     }

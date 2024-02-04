@@ -6,9 +6,11 @@ import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
+import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.sportradar.model.Score.zeroScore;
@@ -124,7 +126,7 @@ class ScoreboardImplTest {
         assertThat(summary).isEqualTo(expectedSummaryText);
     }
 
-    private static LinkedHashMap<Match, Score> setupStorageView() {
+    private static List<Pair<Match, Score>> setupStorageView() {
         var match1 = new Match(new Team(new TeamName("Mexico")), new Team(new TeamName("Canada")));
         var score1 = Score.of(0, 5);
         var match2 = new Match(new Team(new TeamName("Spain")), new Team(new TeamName("Brazil")));
@@ -135,12 +137,12 @@ class ScoreboardImplTest {
         var score4 = Score.of(6, 6);
         var match5 = new Match(new Team(new TeamName("Argentina")), new Team(new TeamName("Australia")));
         var score5 = Score.of(3, 1);
-        var storageView = new LinkedHashMap<Match, Score>();
-        storageView.put(match1, score1);
-        storageView.put(match2, score2);
-        storageView.put(match3, score3);
-        storageView.put(match4, score4);
-        storageView.put(match5, score5);
+        var storageView = new ArrayList<Pair<Match, Score>>();
+        storageView.add(Pair.of(match1, score1));
+        storageView.add(Pair.of(match2, score2));
+        storageView.add(Pair.of(match3, score3));
+        storageView.add(Pair.of(match4, score4));
+        storageView.add(Pair.of(match5, score5));
         return storageView;
     }
 }
