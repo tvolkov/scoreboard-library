@@ -115,14 +115,13 @@ class ScoreboardImplTest {
                 2. Spain 10 - Brazil 2
                 3. Mexico 0 - Canada 5
                 4. Argentina 3 - Australia 1
-                5. Germany 2 - France 2
-                """;
+                5. Germany 2 - France 2""";
 
         // when
         var summary = scoreboard.getSummary().print();
 
         // then
-        assertThat(expectedSummaryText).isEqualTo(summary);
+        assertThat(summary).isEqualTo(expectedSummaryText);
     }
 
     private static LinkedHashMap<Match, Score> setupStorageView() {
