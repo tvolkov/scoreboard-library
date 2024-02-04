@@ -6,8 +6,10 @@ import com.sportradar.impl.storage.ScoreboardStorage;
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import static com.sportradar.model.Score.zeroScore;
@@ -66,10 +68,14 @@ public class ScoreboardImpl implements Scoreboard {
         final var summaryListView = scoreboardStorage.getAll();
         final var sortedMatches = summaryListView
                 .stream()
-                .sorted(Comparator.<Map.Entry<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()
-                        .thenComparing(Comparator.<Map.Entry<Match, Score>>comparingInt(summaryListView::indexOf).reversed()))
+                .sorted(getComparator(summaryListView))
                 .toList();
         return new ScoreboardSummary(sortedMatches);
+    }
+
+    private Comparator<Map.Entry<Match, Score>> getComparator(List<Pair<Match, Score>> summaryListView) {
+        return Comparator.<Map.Entry<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()
+                .thenComparing(Comparator.<Map.Entry<Match, Score>>comparingInt(summaryListView::indexOf).reversed());
     }
 
     private int calculateTotalScore(Score score) {
