@@ -46,6 +46,19 @@ public class ScoreboardTest {
 
         // given
         scoreboard.finishMatch(match1);
+        expectedSummaryText = """
+                1. Uruguay 6 - Italy 6
+                2. Spain 10 - Brazil 2
+                3. Argentina 3 - Australia 1
+                4. Germany 2 - France 2""";
+
+        // when
+        summary = scoreboard.getSummary();
+
+        // then
+        assertThat(summary.print()).isEqualTo(expectedSummaryText);
+
+        // given
         scoreboard.finishMatch(match2);
         scoreboard.finishMatch(match3);
         scoreboard.finishMatch(match4);
