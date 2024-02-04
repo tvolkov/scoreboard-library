@@ -29,6 +29,6 @@ public class ScoreboardSummary {
                     return String.format("%d. %s %d - %s %d", orderedView.indexOf(entry), match.homeTeam().teamName().value(), score.homeTeamScore(), match.awayTeam().teamName().value(), score.awayTeamScore());
 //                    return orderedView.indexOf(entry) + ". " + match.homeTeam().teamName().value() + " " + score.homeTeamScore() + " - " + match.awayTeam().teamName().value() + " " + score.awayTeamScore();
                 })
-                .collect(Collectors.joining());
+                .collect(Collectors.joining(System.lineSeparator()));
     }
 }
