@@ -8,7 +8,6 @@ import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Optional;
 
