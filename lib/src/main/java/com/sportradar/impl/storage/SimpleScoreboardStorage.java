@@ -26,7 +26,7 @@ public class SimpleScoreboardStorage implements ScoreboardStorage {
 
     }
     @Override
-    public Collection<Match> get() {
+    public Collection<Match> getAll() {
         return null;
     }
 }

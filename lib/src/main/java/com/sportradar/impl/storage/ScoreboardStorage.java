@@ -1,16 +1,16 @@
 package com.sportradar.impl.storage;
 
 import com.sportradar.model.Match;
-import com.sportradar.model.Team;
-import com.sportradar.model.TeamName;
+import com.sportradar.model.Score;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public interface ScoreboardStorage {
 
-    void add(Match match);
+    void add(Match match, Score score);
     void remove(Match match);
-    boolean hasMatchOfTeams(TeamName homeTeamName, TeamName awayTeamName);
-    void update(Match match);
-    Collection<Match> get();
+    Optional<Score> get(Match match);
+    void update(Match match, Score score);
+    Collection<Match> getAll();
 }

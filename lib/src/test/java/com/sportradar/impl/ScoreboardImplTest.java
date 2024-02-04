@@ -8,8 +8,10 @@ import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
 import org.junit.jupiter.api.Test;
 
-import static com.sportradar.model.Score.of;
+import java.util.Optional;
+
 import static com.sportradar.model.Score.zeroScore;
+import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -20,20 +22,21 @@ import static org.mockito.Mockito.when;
 class ScoreboardImplTest {
 
     ScoreboardStorage scoreboardStorage = mock(ScoreboardStorage.class);
-    Scoreboard scorboard = new ScoreboardImpl(scoreboardStorage);
+    Scoreboard scoreboard = new ScoreboardImpl(scoreboardStorage);
 
     @Test
     void starts_new_match() {
         // given
-        var homeTeam = new Team(new TeamName("team1"), zeroScore());
-        var awayTeam = new Team(new TeamName("team2"), zeroScore());
+        var homeTeam = new Team(new TeamName("team1"));
+        var awayTeam = new Team(new TeamName("team2"));
         var expectedMatch = new Match(homeTeam, awayTeam);
+        var expectedScore = zeroScore();
 
         // when
-        scorboard.startNewMatch(homeTeam, awayTeam);
+        scoreboard.startNewMatch(homeTeam, awayTeam);
 
         // then
-        verify(scoreboardStorage).add(expectedMatch);
+        verify(scoreboardStorage).add(expectedMatch, expectedScore);
     }
 
     @Test
@@ -41,16 +44,18 @@ class ScoreboardImplTest {
         // given
         var teamName1 = new TeamName("team1");
         var teamName2 = new TeamName("team2");
-        var homeTeam = new Team(teamName1, zeroScore());
-        var awayTeam = new Team(teamName2, zeroScore());
-        var updatedMatch = new Match(new Team(teamName1, zeroScore()), new Team(teamName2, Score.of(1)));
-        when(scoreboardStorage.hasMatchOfTeams(teamName1, teamName2)).thenReturn(true);
+        var homeTeam = new Team(teamName1);
+        var awayTeam = new Team(teamName2);
+        var updatedMatch = new Match(new Team(teamName1), new Team(teamName2));
+        var initialScore = zeroScore();
+        var updatedScore = Score.of(0, 1);
+        when(scoreboardStorage.get(updatedMatch)).thenReturn(Optional.of(initialScore));
 
         // when
-        scorboard.updateScore(updatedMatch);
+        scoreboard.updateScore(updatedMatch, updatedScore);
 
         // then
-        verify(scoreboardStorage).update(updatedMatch);
+        verify(scoreboardStorage).update(updatedMatch, updatedScore);
     }
 
     @Test
@@ -58,17 +63,15 @@ class ScoreboardImplTest {
         // given
         var homeTeam = new Team(new TeamName("team1"));
         var awayTeam = new Team(new TeamName("team2"));
-        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, of(2)));
-        var updatedMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, Score.of(1)));
-        when(scoreboardStorage.has(match)).thenReturn(true);
-
-        // when
-        scorboard.updateScore(updatedMatch);
+        var match = new Match(homeTeam, awayTeam);
+        var initialScore = Optional.of(Score.of(0, 1));
+        var updatedScore = zeroScore();
+        when(scoreboardStorage.get(match)).thenReturn(initialScore);
 
         // then
-        assertThatThrownBy(() -> scorboard.updateScore(updatedMatch)).isInstanceOf(IllegalStateException.class);
-        verify(scoreboardStorage, times(1)).has(updatedMatch);
-        verify(scoreboardStorage, never()).update(updatedMatch);
+        assertThatThrownBy(() -> scoreboard.updateScore(match, updatedScore)).isInstanceOf(IllegalStateException.class);
+        verify(scoreboardStorage, times(1)).get(match);
+        verify(scoreboardStorage, never()).update(match, updatedScore);
     }
 
     @Test
@@ -76,14 +79,15 @@ class ScoreboardImplTest {
         // given
         var homeTeam = new Team(new TeamName("team1"));
         var awayTeam = new Team(new TeamName("team2"));
-        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
-        when(scoreboardStorage.has(match)).thenReturn(false);
+        var match = new Match(homeTeam, awayTeam);
+        var score = zeroScore();
+        when(scoreboardStorage.get(match)).thenReturn(Optional.of(score));
 
         // when
-        scorboard.finishMatch(match);
+        scoreboard.finishMatch(match);
 
         // then
-        verify(scoreboardStorage, times(1)).has(match);
+        verify(scoreboardStorage, times(1)).get(match);
         verify(scoreboardStorage, times(1)).remove(match);
     }
 
@@ -92,12 +96,12 @@ class ScoreboardImplTest {
         // given
         var homeTeam = new Team(new TeamName("team1"));
         var awayTeam = new Team(new TeamName("team2"));
-        var match = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
-        when(scoreboardStorage.has(match)).thenReturn(true);
+        var match = new Match(homeTeam, awayTeam);
+        when(scoreboardStorage.get(match)).thenReturn(empty());
 
         // then
-        assertThatThrownBy(() -> scorboard.finishMatch(match)).isInstanceOf(IllegalStateException.class);
-        verify(scoreboardStorage, times(1)).has(match);
+        assertThatThrownBy(() -> scoreboard.finishMatch(match)).isInstanceOf(IllegalStateException.class);
+        verify(scoreboardStorage, times(1)).get(match);
         verify(scoreboardStorage, never()).remove(match);
     }
 
