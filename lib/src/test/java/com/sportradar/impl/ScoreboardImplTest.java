@@ -9,6 +9,7 @@ import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Optional;
 
 import static com.sportradar.TestUtils.setupStorageView;
@@ -111,7 +112,7 @@ class ScoreboardImplTest {
         // given
         var storageView = setupStorageView();
         when(scoreboardStorage.getAll()).thenReturn(storageView);
-        var expectedSummary = new ScoreboardSummary(storageView);
+        var expectedSummary = new ScoreboardSummary(List.of(storageView.get(3), storageView.get(1), storageView.get(0), storageView.get(4), storageView.get(2)));
 
         // when
         var summary = scoreboard.getSummary();
