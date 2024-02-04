@@ -10,7 +10,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import static com.sportradar.model.Score.zeroScore;
 import static java.util.Objects.requireNonNull;
