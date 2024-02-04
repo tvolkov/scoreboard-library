@@ -1,13 +1,16 @@
 package com.sportradar.impl.storage;
 
 import com.sportradar.model.Match;
+import com.sportradar.model.Score;
 import com.sportradar.model.Team;
 
 import java.util.Collection;
+import java.util.Optional;
 
 public class SimpleScoreboardStorage implements ScoreboardStorage {
+
     @Override
-    public void add(Match match) {
+    public void add(Match match, Score score) {
 
     }
 
@@ -17,12 +20,12 @@ public class SimpleScoreboardStorage implements ScoreboardStorage {
     }
 
     @Override
-    public boolean hasMatchOfTeams(Team homeTeam, Team awayTeam) {
-        return false;
+    public Optional<Score> get(Match match) {
+        return Optional.empty();
     }
 
     @Override
-    public void update(Match match) {
+    public void update(Match match, Score score) {
 
     }
     @Override

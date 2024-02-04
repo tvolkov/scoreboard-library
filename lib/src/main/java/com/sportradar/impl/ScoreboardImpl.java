@@ -34,8 +34,14 @@ public class ScoreboardImpl implements Scoreboard {
         requireNonNull(match);
         requireNonNull(score);
 
-        if (scoreboardStorage.get(match).isEmpty()) {
+        final var maybeCurrentScore = scoreboardStorage.get(match);
+
+        if (maybeCurrentScore.isEmpty()) {
             throw new IllegalStateException("Unable to update score for non-existing match");
+        }
+
+        if (maybeCurrentScore.get().homeTeamScore() > score.homeTeamScore() || maybeCurrentScore.get().awayTeamScore() > score.awayTeamScore()) {
+            throw new IllegalStateException("Unable to decrease score");
         }
 
         scoreboardStorage.update(match, score);
