@@ -7,7 +7,6 @@ import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Map;
 

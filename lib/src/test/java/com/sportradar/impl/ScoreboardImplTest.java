@@ -1,18 +1,17 @@
 package com.sportradar.impl;
 
 import com.sportradar.Scoreboard;
+import com.sportradar.ScoreboardSummary;
 import com.sportradar.impl.storage.ScoreboardStorage;
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
 import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
-import org.apache.commons.lang3.tuple.Pair;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
+import static com.sportradar.TestUtils.setupStorageView;
 import static com.sportradar.model.Score.zeroScore;
 import static java.util.Optional.empty;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -112,37 +111,12 @@ class ScoreboardImplTest {
         // given
         var storageView = setupStorageView();
         when(scoreboardStorage.getAll()).thenReturn(storageView);
-        var expectedSummaryText = """
-                1. Uruguay 6 - Italy 6
-                2. Spain 10 - Brazil 2
-                3. Mexico 0 - Canada 5
-                4. Argentina 3 - Australia 1
-                5. Germany 2 - France 2""";
+        var expectedSummary = new ScoreboardSummary(storageView);
 
         // when
-        var summary = scoreboard.getSummary().print();
+        var summary = scoreboard.getSummary();
 
         // then
-        assertThat(summary).isEqualTo(expectedSummaryText);
-    }
-
-    private static List<Pair<Match, Score>> setupStorageView() {
-        var match1 = new Match(new Team(new TeamName("Mexico")), new Team(new TeamName("Canada")));
-        var score1 = Score.of(0, 5);
-        var match2 = new Match(new Team(new TeamName("Spain")), new Team(new TeamName("Brazil")));
-        var score2 = Score.of(10, 2);
-        var match3 = new Match(new Team(new TeamName("Germany")), new Team(new TeamName("France")));
-        var score3 = Score.of(2, 2);
-        var match4 = new Match(new Team(new TeamName("Uruguay")), new Team(new TeamName("Italy")));
-        var score4 = Score.of(6, 6);
-        var match5 = new Match(new Team(new TeamName("Argentina")), new Team(new TeamName("Australia")));
-        var score5 = Score.of(3, 1);
-        var storageView = new ArrayList<Pair<Match, Score>>();
-        storageView.add(Pair.of(match1, score1));
-        storageView.add(Pair.of(match2, score2));
-        storageView.add(Pair.of(match3, score3));
-        storageView.add(Pair.of(match4, score4));
-        storageView.add(Pair.of(match5, score5));
-        return storageView;
+        assertThat(summary).isEqualTo(expectedSummary);
     }
 }
