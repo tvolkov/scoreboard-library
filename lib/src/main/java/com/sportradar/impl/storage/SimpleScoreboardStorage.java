@@ -2,9 +2,8 @@ package com.sportradar.impl.storage;
 
 import com.sportradar.model.Match;
 import com.sportradar.model.Score;
-import com.sportradar.model.Team;
 
-import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 public class SimpleScoreboardStorage implements ScoreboardStorage {
@@ -29,7 +28,7 @@ public class SimpleScoreboardStorage implements ScoreboardStorage {
 
     }
     @Override
-    public Collection<Match> getAll() {
+    public LinkedHashMap<Match, Score> getAll() {
         return null;
     }
 }

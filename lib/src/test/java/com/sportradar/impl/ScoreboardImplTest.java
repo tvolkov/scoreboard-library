@@ -8,10 +8,13 @@ import com.sportradar.model.Team;
 import com.sportradar.model.TeamName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Optional;
 
 import static com.sportradar.model.Score.zeroScore;
 import static java.util.Optional.empty;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -44,8 +47,6 @@ class ScoreboardImplTest {
         // given
         var teamName1 = new TeamName("team1");
         var teamName2 = new TeamName("team2");
-        var homeTeam = new Team(teamName1);
-        var awayTeam = new Team(teamName2);
         var updatedMatch = new Match(new Team(teamName1), new Team(teamName2));
         var initialScore = zeroScore();
         var updatedScore = Score.of(0, 1);
@@ -107,6 +108,41 @@ class ScoreboardImplTest {
 
     @Test
     void returns_scoreboard_summary() {
+        // given
+        var storageView = setupStorageView();
+        when(scoreboardStorage.getAll()).thenReturn(storageView);
+        var expectedSummaryText = """
+                1. Uruguay 6 - Italy 6
+                2. Spain 10 - Brazil 2
+                3. Mexico 0 - Canada 5
+                4. Argentina 3 - Australia 1
+                5. Germany 2 - France 2
+                """;
 
+        // when
+        var summary = scoreboard.getSummary().print();
+
+        // then
+        assertThat(expectedSummaryText).isEqualTo(summary);
+    }
+
+    private static LinkedHashMap<Match, Score> setupStorageView() {
+        var match1 = new Match(new Team(new TeamName("Mexico")), new Team(new TeamName("Canada")));
+        var score1 = Score.of(0, 5);
+        var match2 = new Match(new Team(new TeamName("Spain")), new Team(new TeamName("Brazil")));
+        var score2 = Score.of(10, 2);
+        var match3 = new Match(new Team(new TeamName("Germany")), new Team(new TeamName("France")));
+        var score3 = Score.of(2, 2);
+        var match4 = new Match(new Team(new TeamName("Uruguay")), new Team(new TeamName("Italy")));
+        var score4 = Score.of(6, 6);
+        var match5 = new Match(new Team(new TeamName("Argentina")), new Team(new TeamName("Australia")));
+        var score5 = Score.of(3, 1);
+        var storageView = new LinkedHashMap<Match, Score>();
+        storageView.put(match1, score1);
+        storageView.put(match2, score2);
+        storageView.put(match3, score3);
+        storageView.put(match4, score4);
+        storageView.put(match5, score5);
+        return storageView;
     }
 }
