@@ -23,8 +23,8 @@ public class ScoreboardImpl implements Scoreboard {
         requireNonNull(homeTeam);
         requireNonNull(awayTeam);
 
-        final var newMatch = new Match(new TeamScore(homeTeam, zeroScore()), new TeamScore(awayTeam, zeroScore()));
-        scoreboardStorage.add(newMatch);
+        final var newMatch = new Match(homeTeam, awayTeam);
+        scoreboardStorage.add(newMatch, zeroScore());
 
         return newMatch;
     }
@@ -32,17 +32,20 @@ public class ScoreboardImpl implements Scoreboard {
     @Override
     public void updateScore(Match match, Score score) {
         requireNonNull(match);
+        requireNonNull(score);
 
-        if (!scoreboardStorage.get(match.homeTeamScore().team(), match.awayTeamScore().team())) {
-
+        if (scoreboardStorage.get(match).isEmpty()) {
+            throw new IllegalStateException("Unable to update score for non-existing match");
         }
+
+        scoreboardStorage.update(match, score);
     }
 
     @Override
     public void finishMatch(Match match) {
         requireNonNull(match);
 
-        if (scoreboardStorage.has(match)) {
+        if (scoreboardStorage.get(match).isEmpty()) {
             throw new IllegalStateException("Unable to finish match which is not currently in progress");
         }
 
