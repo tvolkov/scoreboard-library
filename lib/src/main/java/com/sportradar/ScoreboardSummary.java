@@ -10,13 +10,10 @@ import java.util.stream.Collectors;
 import static java.lang.System.lineSeparator;
 import static java.util.Objects.requireNonNull;
 
-public class ScoreboardSummary {
+public record ScoreboardSummary(List<Pair<Match, Score>> scoreboardView) {
 
-    private final List<Pair<Match, Score>> scoreboardView;
-
-    public ScoreboardSummary(List<Pair<Match, Score>> scoreboardView) {
+    public ScoreboardSummary {
         requireNonNull(scoreboardView);
-        this.scoreboardView = scoreboardView;
     }
 
     public String print() {
