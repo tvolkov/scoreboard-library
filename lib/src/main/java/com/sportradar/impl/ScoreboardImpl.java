@@ -73,9 +73,9 @@ public class ScoreboardImpl implements Scoreboard {
         return new ScoreboardSummary(sortedMatches);
     }
 
-    private Comparator<Map.Entry<Match, Score>> getComparator(List<Pair<Match, Score>> summaryListView) {
-        return Comparator.<Map.Entry<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()
-                .thenComparing(Comparator.<Map.Entry<Match, Score>>comparingInt(summaryListView::indexOf).reversed());
+    private Comparator<Pair<Match, Score>> getComparator(List<Pair<Match, Score>> summaryListView) {
+        return Comparator.<Pair<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()
+                .thenComparing(Comparator.<Pair<Match, Score>>comparingInt(summaryListView::indexOf).reversed());
     }
 
     private int calculateTotalScore(Score score) {
