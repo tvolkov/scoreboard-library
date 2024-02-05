@@ -51,6 +51,7 @@ class ScoreboardImplTest {
         // then
         assertThatThrownBy(() -> scoreboard.startNewMatch(team, null)).isInstanceOf(NullPointerException.class);
         assertThatThrownBy(() -> scoreboard.startNewMatch(null, team)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> scoreboard.startNewMatch(null, null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -91,6 +92,27 @@ class ScoreboardImplTest {
         // then
         assertThatThrownBy(() -> scoreboard.updateScore(match, updatedScore)).isInstanceOf(IllegalStateException.class);
     }
+
+    @Test
+    void throws_exception_if_trying_to_update_score_for_null_match() {
+        // given
+        var updatedScore = Score.of(0, 1);
+
+        // then
+        assertThatThrownBy(() -> scoreboard.updateScore(null, updatedScore)).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void throws_exception_if_trying_to_set_null_score_for_match() {
+        // given
+        var teamName1 = new TeamName("team1");
+        var teamName2 = new TeamName("team2");
+        var match = new Match(new Team(teamName1), new Team(teamName2));
+
+        // then
+        assertThatThrownBy(() -> scoreboard.updateScore(match, null)).isInstanceOf(NullPointerException.class);
+    }
+
 
     @Test
     void throws_exception_if_updated_score_is_less_than_current(){
