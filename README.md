@@ -23,7 +23,7 @@ For instance, `Score` would typically be a part of `Match`, not a standalone ent
 Apart from this, `Team` currently has the only field of `TeamName` however I'd expect that there could be much more information apart from it
 
 Implementation considerations
-* Current implementation does not validate team names, I think, production-ready library would require some validation (e.g. don't allow non-existing country)
+* Current implementation does not validate team names, I think, production-ready library would require some validation (e.g. don't allow non-existing country, total amount of countries, etc)
 * When updating score, in my opinion it would make sense to throw an exception if the new score for any team is lower than the existing (I'm not a football expert, but I never saw this happening during the game). 
 Also it might make sense to only allow incrementing score (i.e. only allow to increase by 1), but I decided to leave it out as I was not 100% sure if it would bring any value
 * The logic for determining which match was started earlier relies on the order of insertion of `Match` objects in the underlying data structure (I chose `LinkedHashMap` exactly because of this)
