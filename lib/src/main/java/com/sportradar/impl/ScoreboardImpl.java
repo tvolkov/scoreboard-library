@@ -48,7 +48,9 @@ public class ScoreboardImpl implements Scoreboard {
             throw new IllegalStateException("Unable to update score for non-existing match");
         }
 
-        if (maybeCurrentScore.get().homeTeamScore() > score.homeTeamScore() || maybeCurrentScore.get().awayTeamScore() > score.awayTeamScore()) {
+        final var currentScore = maybeCurrentScore.get();
+
+        if (currentScore.homeTeamScore() > score.homeTeamScore() || currentScore.awayTeamScore() > score.awayTeamScore()) {
             throw new IllegalStateException("Unable to decrease score");
         }
 
@@ -59,11 +61,11 @@ public class ScoreboardImpl implements Scoreboard {
     public void finishMatch(Match match) {
         requireNonNull(match);
 
-        if (scoreboardStorage.get(match).isEmpty()) {
-            throw new IllegalStateException("Unable to finish match which is not currently in progress");
-        }
-
-        scoreboardStorage.remove(match);
+        scoreboardStorage
+                .get(match)
+                .ifPresentOrElse(__ -> scoreboardStorage.remove(match), () -> {
+                    throw new IllegalStateException("Unable to finish match which is not currently in progress");
+                });
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ScoreboardImpl implements Scoreboard {
     }
 
     private Comparator<Pair<Match, Score>> getComparator(List<Pair<Match, Score>> summaryListView) {
-        return Comparator.<Pair<Match, Score>>comparingInt(entry -> calculateTotalScore(entry.getValue())).reversed()
+        return Comparator.<Pair<Match, Score>>comparingInt(pair -> calculateTotalScore(pair.getValue())).reversed()
                 .thenComparing(Comparator.<Pair<Match, Score>>comparingInt(summaryListView::indexOf).reversed());
     }
 

@@ -21,8 +21,10 @@ public record ScoreboardSummary(List<Pair<Match, Score>> scoreboardView) {
                 .stream()
                 .map(entry -> {
                     final var match = entry.getKey();
+                    final var homeTeamNameStr = match.homeTeam().teamName().value();
+                    final var awayTeamNameStr = match.awayTeam().teamName().value();
                     final var score = entry.getValue();
-                    return String.format("%d. %s %d - %s %d", scoreboardView.indexOf(entry) + 1, match.homeTeam().teamName().value(), score.homeTeamScore(), match.awayTeam().teamName().value(), score.awayTeamScore());
+                    return String.format("%d. %s %d - %s %d", scoreboardView.indexOf(entry) + 1, homeTeamNameStr, score.homeTeamScore(), awayTeamNameStr, score.awayTeamScore());
                 })
                 .collect(Collectors.joining(lineSeparator()));
     }
