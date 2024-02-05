@@ -6,6 +6,11 @@ How to build
 N.B. jdk 17 is required
 
 Structure
+The main interface is `Scoreboard`, which defines 4 methods  for interacting with the library which were mentioned in the requirements document. 
+Respectively, the `ScoreboardImpl` is its only implementation.
+Another important interface is `ScoreboardStorage` which defines contract for storage of matches/scores. It defines 5 basic operations which somewhat resemble `java.util.Map`'s interface 
+The `SimpleScoreboardStorage` is a naive implementation if that interface which is utilising Java's `LinkedHashMap` for storing `Match` vs `Score` mappings. 
+`ScoreboardImpl` depends on `ScoreboardStorage` to store matches information.
 * The domain model looks like following
 ```mermaid
 classDiagram
