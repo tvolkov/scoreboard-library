@@ -12,20 +12,7 @@ classDiagram
       Match : +Team homeTeam
       Match : +Team awayTeam
       Team : +TeamName teamName
-      class Match {
-          +Team homeTeam
-          +Team awayTeam
-      }
-      class Team {
-          +TeamName teamName
-      }
-      class TeamName {
-          +String value
-      }
-      class Score {
-           +int homeTeamScore
-           +int awayTeamScore
-      }
+
 ```
 
 Implementation considerations
