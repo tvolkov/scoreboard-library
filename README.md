@@ -15,6 +15,10 @@ classDiagram
       TeamName : +String value
 ```
 
+The model itself is subject to extension/modifitaion, since for the scope of this assignment some simplifications were made.
+For instance, Score would typically be a part of `Match`, not a standalone entity (this was done in order to simplify storage structure, since `Score` is not what `Match` identity should rely on)
+Apart from this, `Team` currently has the only field of `TeamName` however I'd expect that there could be much more information apart from it
+
 Implementation considerations
 * Current implementation does not validate team names, I think, production-ready library would require some validation (e.g. non-existing country)
 * When updating score, in my opinion it would make sense to throw an exception if the new score for any team is lower than the existing (I'm not a football expert, but I never saw this happening during the game). 
