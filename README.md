@@ -1,6 +1,9 @@
 # scoreboard-library
 Live Football World Cup Scoreboard
 
+How to build
+* `./gradlew clean build`
+
 Structure
 * The domain model looks like following
 ```mermaid
@@ -15,7 +18,7 @@ classDiagram
       TeamName : +String value
 ```
 
-The model itself is subject to extension/modifitaion, since for the scope of this assignment some simplifications were made.
+The model itself is subject to extension/modification, since for the scope of this assignment some simplifications were made.
 For instance, `Score` would typically be a part of `Match`, not a standalone entity (this was done in order to simplify storage structure, since `Score` is not what `Match` identity should rely on)
 Apart from this, `Team` currently has the only field of `TeamName` however I'd expect that there could be much more information apart from it
 
