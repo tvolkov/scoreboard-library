@@ -5,27 +5,14 @@ Structure
 * The domain model looks like following
 ```mermaid
 classDiagram
-      Match <|-- Team
-      Team <|-- TeamName
+      Match *-- Team
+      Team *-- TeamName
       Score : +int homeTeamScore
       Score : +int awayTeamScore
       Match : +Team homeTeam
       Match : +Team awayTeam
       Team : +TeamName teamName
-      class Match {
-          +Team homeTeam
-          +Team awayTeam
-      }
-      class Team {
-          +TeamName teamName
-      }
-      class TeamName {
-          +String value
-      }
-      class Score {
-           +int homeTeamScore
-           +int awayTeamScore
-      }
+      TeamName : +String value
 ```
 
 Implementation considerations
