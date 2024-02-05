@@ -50,6 +50,10 @@ public class ScoreboardImpl implements Scoreboard {
 
         final var currentScore = maybeCurrentScore.get();
 
+        if (currentScore.equals(score)) {
+            throw new IllegalArgumentException("Can't set the same score as current");
+        }
+
         if (currentScore.homeTeamScore() > score.homeTeamScore() || currentScore.awayTeamScore() > score.awayTeamScore()) {
             throw new IllegalStateException("Unable to decrease score");
         }

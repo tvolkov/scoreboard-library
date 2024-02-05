@@ -109,6 +109,22 @@ class ScoreboardImplTest {
     }
 
     @Test
+    void throws_exception_if_new_score_is_same_as_current() {
+        // given
+        var homeTeam = new Team(new TeamName("team1"));
+        var awayTeam = new Team(new TeamName("team2"));
+        var match = new Match(homeTeam, awayTeam);
+        var initialScore = Optional.of(Score.of(0, 1));
+        var updatedScore = Score.of(0, 1);
+        when(scoreboardStorage.get(match)).thenReturn(initialScore);
+
+        // then
+        assertThatThrownBy(() -> scoreboard.updateScore(match, updatedScore)).isInstanceOf(IllegalArgumentException.class);
+        verify(scoreboardStorage, times(1)).get(match);
+        verify(scoreboardStorage, never()).update(match, updatedScore);
+    }
+
+    @Test
     void finishes_match() {
         // given
         var homeTeam = new Team(new TeamName("team1"));
