@@ -3,6 +3,7 @@ Live Football World Cup Scoreboard
 
 How to build
 * `./gradlew clean build`
+
 N.B. jdk 17 is required
 
 Structure
