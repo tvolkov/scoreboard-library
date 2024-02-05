@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import static com.sportradar.model.Score.zeroScore;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class SimpleScoreboardStorageTest {
 
@@ -30,6 +31,20 @@ class SimpleScoreboardStorageTest {
     }
 
     @Test
+    void throws_exception_if_arguments_invalid_when_adding_match() {
+        // given
+        var map = new HashMap<Match, Score>();
+        var storage = new SimpleScoreboardStorage(map);
+        var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
+        var score = zeroScore();
+
+        // then
+        assertThatThrownBy(() -> storage.add(match, null)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> storage.add(null, score)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> storage.add(null, null)).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
     void removes_match() {
         // given
         var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
@@ -43,6 +58,19 @@ class SimpleScoreboardStorageTest {
 
         // then
         assertThat(map.containsKey(match)).isFalse();
+    }
+
+    @Test
+    void throws_exception_if_trying_to_remove_invalid_match() {
+        // given
+        var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
+        var score = zeroScore();
+        var map = new HashMap<Match, Score>();
+        map.put(match, score);
+        var storage = new SimpleScoreboardStorage(map);
+
+        // then
+        assertThatThrownBy(() -> storage.remove(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test
@@ -63,6 +91,21 @@ class SimpleScoreboardStorageTest {
     }
 
     @Test
+    void update_match_throws_exception_if_arguments_invalid() {
+        // given
+        var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
+        var score = zeroScore();
+        var map = new HashMap<Match, Score>();
+        map.put(match, score);
+        var storage = new SimpleScoreboardStorage(map);
+
+        // then
+        assertThatThrownBy(() -> storage.update(match, null)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> storage.update(null, score)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> storage.update(null, null)).isInstanceOf(NullPointerException.class);
+
+    }
+    @Test
     void returns_match() {
         // given
         var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
@@ -77,6 +120,19 @@ class SimpleScoreboardStorageTest {
         // then
         assertThat(result.isPresent()).isTrue();
         assertThat(result.get()).isEqualTo(score);
+    }
+
+    @Test
+    void returns_match_throws_exception_when_trying_to_get_invalid_match() {
+        // given
+        var match = new Match(new Team(new TeamName("team1")), new Team(new TeamName("team2")));
+        var score = zeroScore();
+        var map = new HashMap<Match, Score>();
+        map.put(match, score);
+        var storage = new SimpleScoreboardStorage(map);
+
+        // then
+        assertThatThrownBy(() -> storage.get(null)).isInstanceOf(NullPointerException.class);
     }
 
     @Test

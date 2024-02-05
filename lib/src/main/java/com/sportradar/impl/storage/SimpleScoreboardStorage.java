@@ -7,7 +7,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.Objects.requireNonNull;
 
 public class SimpleScoreboardStorage implements ScoreboardStorage {
 
@@ -23,21 +26,27 @@ public class SimpleScoreboardStorage implements ScoreboardStorage {
 
     @Override
     public void add(Match match, Score score) {
+        requireNonNull(match);
+        requireNonNull(score);
         storage.put(match, score);
     }
 
     @Override
     public void remove(Match match) {
+        requireNonNull(match);
         storage.remove(match);
     }
 
     @Override
     public Optional<Score> get(Match match) {
+        requireNonNull(match);
         return Optional.ofNullable(storage.get(match));
     }
 
     @Override
     public void update(Match match, Score score) {
+        requireNonNull(match);
+        requireNonNull(score);
         storage.put(match, score);
     }
     @Override
