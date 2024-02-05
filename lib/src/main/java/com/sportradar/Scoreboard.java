@@ -6,7 +6,7 @@ import com.sportradar.model.Team;
 
 public interface Scoreboard {
     Match startNewMatch(Team homeTeam, Team awayTeam);
-    void updateScore(Match match, Score score) throws IllegalStateException; //todo custom exception?
-    void finishMatch(Match match) throws IllegalStateException; //todo custom exception?
+    void updateScore(Match match, Score score) throws IllegalStateException;
+    void finishMatch(Match match) throws IllegalStateException;
     ScoreboardSummary getSummary();
 }
