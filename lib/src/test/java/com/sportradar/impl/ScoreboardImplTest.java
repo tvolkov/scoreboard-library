@@ -44,6 +44,25 @@ class ScoreboardImplTest {
     }
 
     @Test
+    void throws_exception_when_starting_match_with_null_teams() {
+        // given
+        var team = new Team(new TeamName("team"));
+
+        // then
+        assertThatThrownBy(() -> scoreboard.startNewMatch(team, null)).isInstanceOf(NullPointerException.class);
+        assertThatThrownBy(() -> scoreboard.startNewMatch(null, team)).isInstanceOf(NullPointerException.class);
+    }
+
+    @Test
+    void throws_exception_when_starting_match_with_same_team() {
+        // given
+        var team = new Team(new TeamName("team"));
+
+        // then
+        assertThatThrownBy(() -> scoreboard.startNewMatch(team, team)).isInstanceOf(IllegalArgumentException.class);
+    }
+
+    @Test
     void updates_score() {
         // given
         var teamName1 = new TeamName("team1");
@@ -58,6 +77,19 @@ class ScoreboardImplTest {
 
         // then
         verify(scoreboardStorage).update(updatedMatch, updatedScore);
+    }
+
+    @Test
+    void throws_exception_if_trying_to_update_score_for_non_existing_match() {
+        // given
+        var teamName1 = new TeamName("team1");
+        var teamName2 = new TeamName("team2");
+        var match = new Match(new Team(teamName1), new Team(teamName2));
+        var updatedScore = Score.of(0, 1);
+        when(scoreboardStorage.get(match)).thenReturn(Optional.empty());
+
+        // then
+        assertThatThrownBy(() -> scoreboard.updateScore(match, updatedScore)).isInstanceOf(IllegalStateException.class);
     }
 
     @Test

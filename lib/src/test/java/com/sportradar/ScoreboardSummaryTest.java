@@ -3,6 +3,7 @@ package com.sportradar;
 import org.junit.jupiter.api.Test;
 
 import static com.sportradar.TestUtils.setupStorageView;
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class ScoreboardSummaryTest {
@@ -20,6 +21,16 @@ class ScoreboardSummaryTest {
 
         // when
         var result = summary.print();
+
+        // then
+        assertThat(result).isEqualTo(expectedSummaryText);
+
+        // given
+        summary = new ScoreboardSummary(emptyList());
+        expectedSummaryText = "";
+
+        // when
+        result = summary.print();
 
         // then
         assertThat(result).isEqualTo(expectedSummaryText);

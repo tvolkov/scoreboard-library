@@ -27,6 +27,10 @@ public class ScoreboardImpl implements Scoreboard {
         requireNonNull(homeTeam);
         requireNonNull(awayTeam);
 
+        if (homeTeam.equals(awayTeam)) {
+            throw new IllegalArgumentException("Can't start match with one team");
+        }
+
         final var newMatch = new Match(homeTeam, awayTeam);
         scoreboardStorage.add(newMatch, zeroScore());
 
