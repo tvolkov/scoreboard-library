@@ -8,9 +8,11 @@ classDiagram
       Match *-- Team
       Team *-- TeamName
       Score : +int homeTeamScore
-      Score : +int awayTeamScore
+
+[//]: # (      Score : +int awayTeamScore)
       Match : +Team homeTeam
-      Match : +Team awayTeam
+
+[//]: # (      Match : +Team awayTeam)
       Team : +TeamName teamName
       class Match {
           +Team homeTeam
