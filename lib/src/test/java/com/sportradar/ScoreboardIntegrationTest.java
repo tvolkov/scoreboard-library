@@ -10,11 +10,11 @@ import org.junit.jupiter.api.Test;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class ScoreboardTest {
+public class ScoreboardIntegrationTest {
     Scoreboard scoreboard = new ScoreboardImpl(new SimpleScoreboardStorage());
 
     @Test
-    void test() {
+    void returns_summary_from_real_storage() {
         // given
         var score1 = Score.of(0, 5);
         var score2 = Score.of(10, 2);
