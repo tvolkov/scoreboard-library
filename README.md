@@ -1,6 +1,30 @@
 # scoreboard-library
 Live Football World Cup Scoreboard
 
+Structure
+* The domain model looks like following
+```mermaid
+classDiagram
+      Match *-- Team
+      Team *-- TeamName
+      Score : +int homeTeamScore
+      Score : +int awayTeamScore
+      Match : +Team homeTeam
+      Match : +Team awayTeam
+      Team : +TeamName teamName
+      class Match {
+          +Team homeTeam
+          +Team awayTeam
+      }
+      class Team {
+          +TeamName teamName
+      }
+      class Score {
+           +int homeTeamScore
+           +int awayTeamScore
+      }
+```
+
 Implementation considerations
 * Current implementation does not validate team names, I think, production-ready library would require some validation (e.g. non-existing country)
 * When updating score, in my opinion it would make sense to throw an exception if the new score for any team is lower than the existing (I'm not a football expert, but I never saw this happening during the game). 
